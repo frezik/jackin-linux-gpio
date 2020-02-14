@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/frezik/jackin-linux-gpio#readme",
   "dependencies": {
-    "jackin": "^0.1.0",
+    "jackin": "^0.2.0",
     "onoff": "^5.0.1"
   },
   "devDependencies": {

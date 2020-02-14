@@ -1,4 +1,5 @@
 import * as Jackin from 'jackin';
+import * as Onoff from 'onoff';
 
 
 export class LinuxGPIO
@@ -6,6 +7,7 @@ export class LinuxGPIO
 {
     private pin: Jackin.Pin;
     private gpio_num: number;
+    private gpio;
 
 
     constructor(
@@ -15,6 +17,7 @@ export class LinuxGPIO
     {
         this.pin = pin;
         this.gpio_num = gpio_num;
+        this.gpio = new Onoff.Gpio( gpio_num, 'out' );
     }
 
 
@@ -27,8 +30,12 @@ export class LinuxGPIO
         mode: Jackin.Mode
     ): Promise<void>
     {
-        // TODO
+        let direction = Jackin.Mode.read == mode
+            ? 'in'
+            : 'out';
+
         return new Promise( (resolve, reject) => {
+            this.gpio.setDirection( direction );
             resolve();
         });
     }
@@ -37,9 +44,14 @@ export class LinuxGPIO
         val: boolean
     ): Promise<void>
     {
-        // TODO
         return new Promise( (resolve, reject) => {
-            resolve();
+            this.gpio.write(
+                val
+                ,(err) => {
+                    if( err ) reject( err );
+                    else resolve();
+                }
+            );
         });
     }
 
