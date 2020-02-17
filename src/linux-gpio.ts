@@ -46,7 +46,7 @@ export class LinuxGPIO
     {
         return new Promise( (resolve, reject) => {
             this.gpio.write(
-                val
+                val ? 1 : 0
                 ,(err) => {
                     if( err ) reject( err );
                     else resolve();

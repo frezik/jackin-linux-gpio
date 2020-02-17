@@ -9,7 +9,7 @@ import * as Process from 'process';
  */
 
 const GPIO_PIN = 8;
-const BLINK_TIME_MS = 1000;
+const BLINK_TIME_MS = 10000;
 
 if(! Process.env['FULL_TEST'] ) {
     Tap.pass( "Skip test; set environment var FULL_TEST=1 to run" );
@@ -23,12 +23,19 @@ let gpio_pin = {
 };
 const gpio = new GPIO.LinuxGPIO( gpio_pin, GPIO_PIN );
 
+Tap.ok( gpio, "Fetched GPIO object for pin " + GPIO_PIN );
 gpio.setMode( Jackin.Mode.write )
-    .then( () => gpio.setValue( true ) )
+    .then( () => {
+        gpio.setValue( true );
+	Tap.pass( "Set GPIO value high" );
+    })
     .then( () => new Promise( (resolve, reject) => {
         setTimeout(
             () => resolve()
             ,BLINK_TIME_MS
         );
     }) )
-    .then( () => gpio.setValue( false ) );
+    .then( () => {
+	gpio.setValue( false )
+        Tap.pass( "Set GPIO value low" );
+    });
