@@ -58,9 +58,11 @@ export class LinuxGPIO
     getValue(
     ): Promise<boolean>
     {
-        // TODO
         return new Promise( (resolve, reject) => {
-            resolve( true );
+            this.gpio.read( (err, value) => {
+                if( err ) reject( err );
+                else resolve( value > 0 );
+            });
         });
     }
 
